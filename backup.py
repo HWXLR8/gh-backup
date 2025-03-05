@@ -42,19 +42,18 @@ while url:
         dir = os.path.join(BACKUP_DIR, repo_name)
 
         # clone repo if not exist
-        if not os.path.exists(dir + ".git"):
+        if not os.path.exists(dir):
             print(f"cloning {'private' if is_private else 'public'} repo: {repo_name}")
             # add token to url
             token_repo_url = f"https://{GITHUB_TOKEN}:x-oauth-basic@{repo_url.replace('https://', '')}"
             subprocess.run(["git", "clone", "--mirror", token_repo_url, dir])
         else: # update repo if exists
             print(f"updating existing repo: {repo_name}")
-            os.chdir(dir + ".git")
+            os.chdir(dir)
             try:
-                # Fetch updates from all remotes and all branches
+                # fetch updates from all remotes and all branches
                 subprocess.run(["git", "fetch", "--all"], check=True)
-
-                # Update all refs
+                # update all refs
                 subprocess.run(["git", "remote", "update"], check=True)
             except subprocess.CalledProcessError as e:
                 print(f"error updating {repo_name}: {e}")
