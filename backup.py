@@ -18,6 +18,8 @@ os.makedirs(BACKUP_DIR, exist_ok=True)
 
 urepos = set() # unique repos
 
+timestamp = datetime.datetime.now()
+print(f"backing up github.com/{GITHUB_USERNAME} @ {timestamp}")
 while url:
     response = requests.get(url, headers=headers)
     if response.status_code != 200:
